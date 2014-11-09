@@ -1,4 +1,4 @@
---- ../../../openwrt_trunk.orig/feeds/packages/net/tinc/Makefile
+--- ../../../downloads/openwrt_trunk-r42803/feeds/packages/net/tinc/Makefile
 +++ ../../../openwrt_trunk/feeds/packages/net/tinc/Makefile
 @@ -22,7 +22,7 @@
  define Package/tinc
@@ -8,8 +8,8 @@
 +  DEPENDS:=+liblzo +libopenssl
    TITLE:=VPN tunneling daemon
    URL:=http://www.tinc-vpn.org/
-   SUBMENU:=VPN
-@@ -37,23 +37,16 @@
+   MAINTAINER:=Saverio Proto <zioproto@gmail.com>
+@@ -38,23 +38,16 @@
  
  CONFIGURE_ARGS += \
  	--with-kernel="$(LINUX_DIR)" \

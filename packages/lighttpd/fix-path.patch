@@ -1,24 +1,28 @@
-diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/files/lighttpd.conf ../../../openwrt_trunk/feeds/packages/net/lighttpd/files/lighttpd.conf
---- ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/files/lighttpd.conf	2014-05-26 13:26:44.243410831 +0400
-+++ ../../../openwrt_trunk/feeds/packages/net/lighttpd/files/lighttpd.conf	2014-05-26 13:27:05.291422128 +0400
-@@ -9,10 +9,10 @@
- ######### Options that are good to be but not neccesary to be changed #######
- #server.port                 = 81
- #server.bind                 = "localhost"
+diff -urx .svn ../../../downloads/openwrt_trunk-r42803/feeds/packages/net/lighttpd/files/lighttpd.conf ../../../openwrt_trunk/feeds/packages/net/lighttpd/files/lighttpd.conf
+--- ../../../downloads/openwrt_trunk-r42803/feeds/packages/net/lighttpd/files/lighttpd.conf	2014-10-15 10:43:09.827917919 +0400
++++ ../../../openwrt_trunk/feeds/packages/net/lighttpd/files/lighttpd.conf	2014-10-16 09:00:17.362456611 +0400
+@@ -1,12 +1,12 @@
+ server.modules = (
+ )
+ 
 -server.document-root        = "/www"
 +server.document-root        = "/opt/share/www"
  server.upload-dirs          = ( "/tmp" )
 -server.errorlog             = "/var/log/lighttpd/error.log"
 -server.pid-file             = "/var/run/lighttpd.pid"
+-server.username             = "http"
+-server.groupname            = "www-data"
 +server.errorlog             = "/opt/var/log/lighttpd/error.log"
 +server.pid-file             = "/opt/var/run/lighttpd.pid"
- #server.username             = "www-data"
- #server.groupname            = "www-data"
- #server.tag                  = "lighttpd"
-@@ -26,13 +26,13 @@
- static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
++#server.username             = "http"
++#server.groupname            = "www-data"
  
- ## Use ipv6 if available
+ index-file.names            = ( "index.php", "index.html",
+                                 "index.htm", "default.htm",
+@@ -23,10 +23,10 @@
+ #server.network-backend      = "write"
+ 
+ ### Use IPv6 if available
 -#include_shell "/usr/share/lighttpd/use-ipv6.pl"
 +#include_shell "/opt/share/lighttpd/use-ipv6.pl"
  
@@ -29,13 +33,11 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/fil
 -include_shell "cat /etc/lighttpd/conf.d/*.conf"
 +include       "/opt/etc/lighttpd/mime.conf"
 +include_shell "cat /opt/etc/lighttpd/conf.d/*.conf"
- 
- 
- 
-diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Makefile ../../../openwrt_trunk/feeds/packages/net/lighttpd/Makefile
---- ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Makefile	2014-05-26 13:26:44.243410831 +0400
-+++ ../../../openwrt_trunk/feeds/packages/net/lighttpd/Makefile	2014-05-26 15:48:14.691258059 +0400
-@@ -49,8 +49,8 @@
+Only in ../../../openwrt_trunk/feeds/packages/net/lighttpd/files: S80lighttpd
+diff -urx .svn ../../../downloads/openwrt_trunk-r42803/feeds/packages/net/lighttpd/Makefile ../../../openwrt_trunk/feeds/packages/net/lighttpd/Makefile
+--- ../../../downloads/openwrt_trunk-r42803/feeds/packages/net/lighttpd/Makefile	2014-10-15 10:43:09.827917919 +0400
++++ ../../../openwrt_trunk/feeds/packages/net/lighttpd/Makefile	2014-10-15 10:43:18.371917761 +0400
+@@ -50,8 +50,8 @@
  endef
  
  CONFIGURE_ARGS+= \
@@ -46,7 +48,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  	--enable-shared \
  	--enable-static \
  	--disable-rpath \
-@@ -59,7 +59,7 @@
+@@ -60,7 +60,7 @@
  	--without-fam \
  	--without-gdbm \
  	--without-ldap \
@@ -55,7 +57,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  	--without-memcache \
  	--with-pcre \
  	--without-valgrind \
-@@ -70,13 +70,13 @@
+@@ -71,13 +71,13 @@
  
  ifneq ($(strip $(CONFIG_LIGHTTPD_SSL)),)
    CONFIGURE_ARGS+= \
@@ -71,7 +73,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
    CONFIGURE_ARGS+= \
  	--with-mysql
  else
-@@ -105,22 +105,23 @@
+@@ -106,22 +106,23 @@
  endef
  
  define Package/lighttpd/conffiles
@@ -106,7 +108,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  endef
  
  define BuildPlugin
-@@ -134,13 +135,13 @@
+@@ -135,13 +136,13 @@
    endef
  
    define Package/lighttpd-mod-$(1)/install
@@ -125,7 +127,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  	fi
    endef
  
-@@ -153,7 +154,7 @@
+@@ -154,7 +155,7 @@
  $(eval $(call BuildPlugin,alias,Directory alias,,10))
  $(eval $(call BuildPlugin,auth,Authentication,,05))
  $(eval $(call BuildPlugin,cgi,CGI,,10))
@@ -134,7 +136,7 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  $(eval $(call BuildPlugin,compress,Compress output,+PACKAGE_lighttpd-mod-compress:zlib,10))
  $(eval $(call BuildPlugin,evasive,Evasive,,10))
  $(eval $(call BuildPlugin,evhost,Exnhanced Virtual-Hosting,,10))
-@@ -161,7 +162,7 @@
+@@ -162,7 +163,7 @@
  $(eval $(call BuildPlugin,extforward,Extract client,,10))
  $(eval $(call BuildPlugin,fastcgi,FastCGI,,10))
  $(eval $(call BuildPlugin,flv_streaming,FLV streaming,,10))
@@ -143,3 +145,4 @@ diff -ur ../../../downloads/openwrt_trunk-r40859/feeds/packages/net/lighttpd/Mak
  $(eval $(call BuildPlugin,mysql_vhost,Mysql virtual hosting,+PACKAGE_lighttpd-mod-mysql_vhost:libmysqlclient,10))
  $(eval $(call BuildPlugin,proxy,Proxy,,10))
  $(eval $(call BuildPlugin,redirect,URL redirection,+PACKAGE_lighttpd-mod-redirect:libpcre,10))
+Only in ../../../openwrt_trunk/feeds/packages/net/lighttpd: patches

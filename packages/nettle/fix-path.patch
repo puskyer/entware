@@ -1,6 +1,6 @@
---- ../../../downloads/mipsel-hardfloat/openwrt_trunk-r40423/feeds/packages/libs/nettle/Makefile
-+++ ../../../openwrt_trunk/feeds/packages/libs/nettle/Makefile
-@@ -64,22 +64,22 @@
+--- ../../../downloads/mipsel-hardfloat/openwrt_trunk-r40423/package/libs/nettle/Makefile
++++ ../../../openwrt_trunk/package/libs/nettle/Makefile
+@@ -65,22 +65,22 @@
  endef
  
  define Build/InstallDev
